@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace AVSProject.model
+namespace AVSProject.EFModel
 {
     public partial class db_AVSContext : DbContext
     {
@@ -25,7 +23,7 @@ namespace AVSProject.model
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER01;Database=db_AVS;User ID=sa;Password=Nhanchanh513");
+                optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER01;Database=db_AVS;Trusted_Connection=True;MultipleActiveResultSets=true;");
             }
         }
 
@@ -152,7 +150,6 @@ namespace AVSProject.model
                     .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.IsVn)
-                    .IsRequired()
                     .HasColumnName("isVN")
                     .HasDefaultValueSql("((1))");
 
@@ -310,6 +307,11 @@ namespace AVSProject.model
                     .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasDefaultValueSql("('')");
+
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FullName)
                     .IsRequired()

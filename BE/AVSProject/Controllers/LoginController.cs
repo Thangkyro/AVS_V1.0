@@ -1,19 +1,11 @@
 ﻿using AVSProject.Common;
 using AVSProject.DataService;
-using AVSProject.model;
+using AVSProject.EFModel;
 using AVSProject.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AVSProject.Controllers
 {
@@ -29,8 +21,8 @@ namespace AVSProject.Controllers
         {
             string currentPass = AESUtility.Decrypt(value.PassWord, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
             //var test1 = AESUtility.Decrypt(test, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
-            var check = CheckUserName(value.UserName);
-            if(check == null) return Unauthorized();
+            var check = CheckEmail(value.Email);
+            if (check == null) return Unauthorized();
             string userPass = AESUtility.Decrypt(check.Password, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
             if (currentPass == userPass)
             {
@@ -38,15 +30,16 @@ namespace AVSProject.Controllers
                 //response.StatusCode = HttpStatusCode.OK;
                 var data = GetToken(500, check);
                 return Ok(data);
-            } else
+            }
+            else
             {
                 return Unauthorized();
             }
         }
 
-        public SUser CheckUserName(string username)
+        public SUser CheckEmail(string email)
         {
-            var checkUser = dbcontext.SUser.Where(x => x.UserName == username).FirstOrDefault();
+            var checkUser = dbcontext.SUser.Where(x => x.Email == email).FirstOrDefault();
             if (checkUser == null) return new SUser();
             return checkUser;
         }
@@ -67,7 +60,7 @@ namespace AVSProject.Controllers
                 IsInactive = checkUser.IsInactive,
                 ModifiedAt = checkUser.ModifiedAt,
                 ModifiedBy = checkUser.ModifiedBy,
-                Expired = (long) DateTime.Now.AddMinutes(tokenValidPeriod).Subtract(new DateTime(1970, 1, 1)).TotalSeconds
+                Expired = (long)DateTime.Now.AddMinutes(tokenValidPeriod).Subtract(new DateTime(1970, 1, 1)).TotalSeconds
             };
             return JsonConvert.SerializeObject(obj);
         }
@@ -101,5 +94,14 @@ namespace AVSProject.Controllers
         //        return null;
         //    }
         //}
+        public void ForGetPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email)) return;
+            var emailExist = dbcontext.SUser.Where(x => x.Email == email).FirstOrDefault();
+            if (emailExist != null)
+            {
+
+            }
+        }
     }
 }

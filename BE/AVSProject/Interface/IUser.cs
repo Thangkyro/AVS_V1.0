@@ -1,9 +1,5 @@
-﻿using AVSProject.model;
-using AVSProject.Models;
-using System;
+﻿using AVSProject.EFModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AVSProject.Interface
 {

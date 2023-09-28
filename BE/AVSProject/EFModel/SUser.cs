@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AVSProject.model
+namespace AVSProject.EFModel
 {
     public partial class SUser
     {
@@ -19,5 +19,6 @@ namespace AVSProject.model
         public DateTime CreatedAt { get; set; }
         public int ModifiedBy { get; set; }
         public DateTime ModifiedAt { get; set; }
+        public string Email { get; set; }
     }
 }

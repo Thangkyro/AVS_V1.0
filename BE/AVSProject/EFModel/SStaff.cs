@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AVSProject.model
+namespace AVSProject.EFModel
 {
     public partial class SStaff
     {

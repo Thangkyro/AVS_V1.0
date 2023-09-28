@@ -1,10 +1,7 @@
-﻿using AVSProject.Interface;
-using AVSProject.model;
-using AVSProject.Models;
-using System;
+﻿using AVSProject.EFModel;
+using AVSProject.Interface;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AVSProject.DataService
 {

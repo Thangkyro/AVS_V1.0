@@ -1,4 +1,5 @@
-﻿using AVSProject.model;
+﻿using AVSProject.Common;
+using AVSProject.EFModel;
 using AVSProject.Models;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace AVSProject.DataService
             var data = new SUser
             {
                 UserName = user.UserName,
-                Password = user.Password,
+                Password = AESUtility.Decrypt(user.Password, AESUtility.DEFAULT_ENCRYPT_KEY_STRING),
                 Permission = user.Permission,
                 BranchId = user.BranchId,
                 CreatedAt = user.CreatedAt,
