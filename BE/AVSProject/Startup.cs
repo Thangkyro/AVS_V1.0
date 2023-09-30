@@ -24,11 +24,7 @@ namespace AVSProject
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp";
-            });
-
+           
             var configBuilder = new ConfigurationBuilder()
                  .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
@@ -40,6 +36,7 @@ namespace AVSProject
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [System.Obsolete]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -53,15 +50,16 @@ namespace AVSProject
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();            
-            app.UseSignalR(route =>
+            app.UseCookiePolicy();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
             {
-                 route.MapHub<Hub>("/myHub");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}/{id?}");
             });
 
             app.UseCors("default");
-            app.UseHttpsRedirection();
-            app.UseMvc();
         }
     }
 }
