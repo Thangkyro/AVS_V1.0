@@ -33,12 +33,18 @@ namespace AVSProject
             services.AddDbContext<db_AVSContext>(options => options.UseSqlServer(configurationroot.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(db_AVSContext).Assembly.FullName)));
             services.AddOptions();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         [System.Obsolete]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("../swagger/v1/swagger.json", "AVS Version 1");
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

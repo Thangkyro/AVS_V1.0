@@ -1,4 +1,5 @@
-﻿using AVSProject.Common;
+﻿using AVSProject.Business;
+using AVSProject.Common;
 using AVSProject.DataService;
 using AVSProject.EFModel;
 using AVSProject.Models;
@@ -14,55 +15,26 @@ namespace AVSProject.Controllers
     public class LoginController : ControllerBase
     {
         private static db_AVSContext dbcontext = new db_AVSContext();
-        private static UserBusiness userBusiness = new UserBusiness();
-
+        private static LoginBusiness loginBusiness = new LoginBusiness();
         [HttpPost]
         public IActionResult Post([FromBody] LoginModel value)
         {
             string currentPass = AESUtility.Decrypt(value.PassWord, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
             //var test1 = AESUtility.Decrypt(test, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
-            var check = CheckEmail(value.Email);
+            var check = loginBusiness.CheckEmail(value.Email);
             if (check == null) return Unauthorized();
             string userPass = AESUtility.Decrypt(check.Password, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
             if (currentPass == userPass)
             {
                 //var response =  new HttpResponseMessage();
                 //response.StatusCode = HttpStatusCode.OK;
-                var data = GetToken(500, check);
+                var data = loginBusiness.GetToken(500, check);
                 return Ok(data);
             }
             else
             {
                 return Unauthorized();
             }
-        }
-
-        public SUser CheckEmail(string email)
-        {
-            var checkUser = dbcontext.SUser.Where(x => x.Email == email).FirstOrDefault();
-            if (checkUser == null) return new SUser();
-            return checkUser;
-        }
-        public string GetToken(int tokenValidPeriod, SUser checkUser)
-        {
-            var obj = new UserModel
-            {
-                Userid = checkUser.Userid,
-                UserName = checkUser.UserName,
-                Password = checkUser.Password,
-                Permission = checkUser.Permission,
-                BranchId = checkUser.BranchId,
-                CreatedAt = checkUser.CreatedAt,
-                CreatedBy = checkUser.CreatedBy,
-                IsAdmin = checkUser.IsAdmin,
-                FullName = checkUser.FullName,
-                Decriptions = checkUser.Decriptions,
-                IsInactive = checkUser.IsInactive,
-                ModifiedAt = checkUser.ModifiedAt,
-                ModifiedBy = checkUser.ModifiedBy,
-                Expired = (long)DateTime.Now.AddMinutes(tokenValidPeriod).Subtract(new DateTime(1970, 1, 1)).TotalSeconds
-            };
-            return JsonConvert.SerializeObject(obj);
         }
 
         //public static string GetToken(LoginModel model, int expired = 1)
@@ -94,14 +66,15 @@ namespace AVSProject.Controllers
         //        return null;
         //    }
         //}
-        public void ForGetPassword(string email)
-        {
-            if (string.IsNullOrEmpty(email)) return;
-            var emailExist = dbcontext.SUser.Where(x => x.Email == email).FirstOrDefault();
-            if (emailExist != null)
-            {
 
-            }
-        }
+        //public void ForGetPassword(string email)
+        //{
+        //    if (string.IsNullOrEmpty(email)) return;
+        //    var emailExist = dbcontext.SUser.Where(x => x.Email == email).FirstOrDefault();
+        //    if (emailExist != null)
+        //    {
+
+        //    }
+        //}
     }
 }
