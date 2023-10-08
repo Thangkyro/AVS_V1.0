@@ -65,7 +65,7 @@ namespace AVSProject.DataService
             var data = new SUser
             {
                 UserName = user.UserName,
-                Password = AESUtility.Decrypt(user.Password, AESUtility.DEFAULT_ENCRYPT_KEY_STRING),
+                Password = user.Password,
                 Permission = user.Permission,
                 BranchId = user.BranchId,
                 CreatedAt = user.CreatedAt,

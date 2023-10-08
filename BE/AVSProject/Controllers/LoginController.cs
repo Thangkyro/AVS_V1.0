@@ -20,14 +20,11 @@ namespace AVSProject.Controllers
         public IActionResult Post([FromBody] LoginModel value)
         {
             string currentPass = AESUtility.Decrypt(value.PassWord, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
-            //var test1 = AESUtility.Decrypt(test, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
             var check = loginBusiness.CheckEmail(value.Email);
             if (check == null) return Unauthorized();
             string userPass = AESUtility.Decrypt(check.Password, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
             if (currentPass == userPass)
             {
-                //var response =  new HttpResponseMessage();
-                //response.StatusCode = HttpStatusCode.OK;
                 var data = loginBusiness.GetToken(500, check);
                 return Ok(data);
             }

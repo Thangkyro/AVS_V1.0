@@ -14,11 +14,11 @@ namespace AVSProject.Business
         public SUser CheckEmail(string email)
         {
             var checkUser = dbcontext.SUser.Where(x => x.Email == email).FirstOrDefault();
-            if (checkUser == null) return new SUser();
+            if (checkUser == null) return null;
             return checkUser;
         }
 
-        public string GetToken(int tokenValidPeriod, SUser checkUser)
+        public UserModel GetToken(int tokenValidPeriod, SUser checkUser)
         {
             var obj = new UserModel
             {
@@ -37,7 +37,7 @@ namespace AVSProject.Business
                 ModifiedBy = checkUser.ModifiedBy,
                 Expired = (long)DateTime.Now.AddMinutes(tokenValidPeriod).Subtract(new DateTime(1970, 1, 1)).TotalSeconds
             };
-            return JsonConvert.SerializeObject(obj);
+            return obj;
         }
     }
 }

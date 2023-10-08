@@ -1,4 +1,5 @@
 ﻿using AVSProject.EFModel;
+using AVSProject.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,7 @@ namespace AVSProject
                     b => b.MigrationsAssembly(typeof(db_AVSContext).Assembly.FullName)));
             services.AddOptions();
             services.AddSwaggerGen();
+            services.Configure<EmailSetting>(Configuration.GetSection(nameof(EmailSetting)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
