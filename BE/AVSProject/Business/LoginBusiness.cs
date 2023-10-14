@@ -1,9 +1,11 @@
 ﻿using AVSProject.EFModel;
 using AVSProject.Models;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AVSProject.Business
@@ -20,11 +22,13 @@ namespace AVSProject.Business
 
         public UserModel GetToken(int tokenValidPeriod, SUser checkUser)
         {
+            //var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            //var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var obj = new UserModel
             {
                 Userid = checkUser.Userid,
                 UserName = checkUser.UserName,
-                Password = checkUser.Password,
+                //Password = checkUser.Password,
                 Permission = checkUser.Permission,
                 BranchId = checkUser.BranchId,
                 CreatedAt = checkUser.CreatedAt,

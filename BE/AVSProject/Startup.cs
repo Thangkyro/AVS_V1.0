@@ -25,7 +25,7 @@ namespace AVSProject
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSignalR();
-           
+
             var configBuilder = new ConfigurationBuilder()
                  .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
@@ -36,6 +36,10 @@ namespace AVSProject
             services.AddOptions();
             services.AddSwaggerGen();
             services.Configure<EmailSetting>(Configuration.GetSection(nameof(EmailSetting)));
+            services.AddCors(policyBuilder =>
+                            policyBuilder.AddDefaultPolicy(policy =>
+                            policy.SetIsOriginAllowed(origin => true).AllowAnyHeader().AllowAnyHeader().AllowCredentials())
+);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +64,7 @@ namespace AVSProject
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseRouting();
+            app.UseCors();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -67,7 +72,6 @@ namespace AVSProject
                     pattern: "{controller}/{action}/{id?}");
             });
 
-            app.UseCors("default");
         }
     }
 }
