@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { MouseEvent, MouseEventHandler, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,9 +6,12 @@ import { IRootState } from '../../store';
 import { toggleTheme } from '../../store/themeConfigSlice';
 import { toggleSidebar } from '../../store/themeConfigSlice';
 import Dropdown from '../Dropdown';
+import { useAuth, getCurrentUser, checkExpiry } from '@/hooks/useUser';
 
 const Header = () => {
     const router = useRouter();
+    const user = getCurrentUser();
+    const {logout} = useAuth();
 
     useEffect(() => {
         const selector = document.querySelector('ul.horizontal-menu a[href="' + window.location.pathname + '"]');
@@ -37,11 +40,19 @@ const Header = () => {
             }
         }
     }, [router.pathname]);
+    useEffect(() => {
+        checkExpiry();
+    }, [])
 
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
 
     const dispatch = useDispatch();
+
+    const signOut = (e: MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        logout();
+    }
 
     return (
         <header className={themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}>
@@ -104,16 +115,18 @@ const Header = () => {
                             >
                                 <ul className="w-[230px] !py-0 font-semibold text-dark dark:text-white-dark dark:text-white-light/90">
                                     <li>
-                                        <div className="flex items-center px-4 py-4">
+                                        <div className="flex px-4 py-4">
                                             <img className="h-10 w-10 rounded-md object-cover" src="/assets/images/user-profile.jpeg" alt="userProfile" />
                                             <div className="ltr:pl-4 rtl:pr-4">
                                                 <h4 className="text-base">
-                                                    John Doe
+                                                    {user?.fullName}
                                                     <span className="rounded bg-success-light px-1 text-xs text-success ltr:ml-2 rtl:ml-2">Pro</span>
                                                 </h4>
-                                                <button type="button" className="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white">
-                                                    johndoe@gmail.com
-                                                </button>
+                                                {user?.email ? (
+                                                    <button type="button" className="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white">
+                                                        {user?.email}
+                                                    </button>
+                                                ) : null}
                                             </div>
                                         </div>
                                     </li>
@@ -134,7 +147,7 @@ const Header = () => {
                                         </Link>
                                     </li>
                                     <li className="border-t border-white-light dark:border-white-light/10">
-                                        <Link href="/auth/boxed-signin" className="!py-3 text-danger">
+                                        <Link href="#" onClick={signOut} className="!py-3 text-danger">
                                             <svg className="rotate-90 ltr:mr-2 rtl:ml-2" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <use href="/assets/images/icons/icons.svg#lineDuotoneArrowsActionUpload" stroke="currentColor" />
                                             </svg>

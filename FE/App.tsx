@@ -1,8 +1,12 @@
+'use client';
 import { PropsWithChildren, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import { IRootState } from './store';
 import { toggleRTL, toggleTheme, toggleLocale, toggleMenu, toggleLayout, toggleAnimation, toggleNavbar, toggleSemidark } from './store/themeConfigSlice';
+
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function App({ children }: PropsWithChildren) {
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
@@ -30,6 +34,7 @@ function App({ children }: PropsWithChildren) {
             } main-section relative font-nunito text-sm font-normal antialiased`}
         >
             {children}
+            <ToastContainer />
         </div>
     );
 }
