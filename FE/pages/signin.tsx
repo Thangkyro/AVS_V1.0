@@ -68,7 +68,7 @@ const SignIn = () => {
                         {formik.submitCount && formik.errors.password ? <div className="mt-1 text-danger">{formik.errors.password}</div> : ''}
                     </div>
                     <p className="">
-                        <Link href="/password-reset" className="font-bold text-primary hover:underline ltr:ml-1 rtl:mr-1">
+                        <Link href="/forgot-password" className="font-bold text-primary hover:underline ltr:ml-1 rtl:mr-1">
                             Forgot password?
                         </Link>
                     </p>

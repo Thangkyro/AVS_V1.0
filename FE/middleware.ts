@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
     const currentUser = request.cookies.get(USER_COOKIE_KEY)?.value;
     const pathname = request.nextUrl.pathname;
 
-    if (!currentUser && pathname !== '/signin' && pathname !== '/password-reset') {
+    if (!currentUser && pathname !== '/signin' && pathname !== '/password-reset' && pathname !== '/forgot-password') {
         return NextResponse.redirect(new URL('/signin', request.url));
     }
 

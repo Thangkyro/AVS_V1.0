@@ -37,5 +37,8 @@ export const checkExpiry = () => {
             Cookie.remove(USER_COOKIE_KEY);
             window.location.href = '/singin';
         }
+    } else {
+        Cookie.remove(USER_COOKIE_KEY);
+        window.location.href = '/singin';
     }
 };
