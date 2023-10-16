@@ -95,7 +95,7 @@ namespace AVSProject.DataService
         {
             userService.Delete(userID);
         }
-        public bool ForgetPassword(string token, string newPass)
+        public bool UpdateNewPassword(string token, string newPass)
         {
             byte[] tokenByteArray = Convert.FromBase64String(token);
             string email = GetString(tokenByteArray.Skip(8).ToArray());

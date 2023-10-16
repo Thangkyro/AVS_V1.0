@@ -17,13 +17,12 @@ namespace AVSProject.Models
     public class MailData
     {
         // Receiver
-        public List<string> To { get; set; }
-        public List<string> Bcc { get; set; }
+        public List<string> Email { get; set; }
+        //public List<string> Bcc { get; set; }
 
-        public List<string> Cc { get; set; }
+        //public List<string> Cc { get; set; }
 
         // Sender
-        public string From { get; set; }
 
         //public string DisplayName { get; set; }
 

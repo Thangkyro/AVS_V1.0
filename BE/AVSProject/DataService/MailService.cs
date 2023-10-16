@@ -35,10 +35,10 @@ namespace AVSProject.DataService
 
                 #region Sender / Receiver
                 // Sender
-                mail.From.Add(new MailboxAddress(_settings.DisplayName, mailData.From ?? _settings.From));
+                mail.From.Add(new MailboxAddress(_settings.DisplayName, _settings.From));
 
                 // Receiver
-                foreach (string mailAddress in mailData.To)
+                foreach (string mailAddress in mailData.Email)
                     mail.To.Add(MailboxAddress.Parse(mailAddress));
 
                 // Set Reply to if specified in mail data
@@ -47,25 +47,25 @@ namespace AVSProject.DataService
 
                 // BCC
                 // Check if a BCC was supplied in the request
-                if (mailData.Bcc != null)
-                {
-                    // Get only addresses where value is not null or with whitespace. x = value of address
-                    foreach (string mailAddress in mailData.Bcc.Where(x => !string.IsNullOrWhiteSpace(x)))
-                        mail.Bcc.Add(MailboxAddress.Parse(mailAddress.Trim()));
-                }
+                //if (mailData.Bcc != null)
+                //{
+                //    // Get only addresses where value is not null or with whitespace. x = value of address
+                //    foreach (string mailAddress in mailData.Bcc.Where(x => !string.IsNullOrWhiteSpace(x)))
+                //        mail.Bcc.Add(MailboxAddress.Parse(mailAddress.Trim()));
+                //}
 
                 // CC
                 // Check if a CC address was supplied in the request
-                if (mailData.Cc != null)
-                {
-                    foreach (string mailAddress in mailData.Cc.Where(x => !string.IsNullOrWhiteSpace(x)))
-                        mail.Cc.Add(MailboxAddress.Parse(mailAddress.Trim()));
-                }
+                //if (mailData.Cc != null)
+                //{
+                //    foreach (string mailAddress in mailData.Cc.Where(x => !string.IsNullOrWhiteSpace(x)))
+                //        mail.Cc.Add(MailboxAddress.Parse(mailAddress.Trim()));
+                //}
                 #endregion
 
                 #region Content
                 byte[] time = BitConverter.GetBytes(DateTime.UtcNow.ToBinary());
-                byte[] key = GetBytes(mailData.To.First());
+                byte[] key = GetBytes(mailData.Email.First());
                 string token = Convert.ToBase64String(time.Concat(key).ToArray());
 
                 // Add Content to Mime Message
