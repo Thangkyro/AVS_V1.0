@@ -1,6 +1,8 @@
-﻿using AVSProject.DataService;
+﻿using AVSProject.Business;
+using AVSProject.DataService;
 using AVSProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +32,7 @@ namespace AVSProject.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] UserModel value)
+        public void UpdateUser([FromBody] UserModel value)
         {
             userBusiness.UpdateUser(value);
         }
@@ -40,6 +42,20 @@ namespace AVSProject.Controllers
         public void Delete(int id)
         {
             userBusiness.DeleteUser(id);
+        }
+
+        [HttpPost("UpdateNewPassword")]
+        public IActionResult UpdateNewPassword(string token, string newpass)
+        {
+            var check = userBusiness.ForgetPassword(token, newpass);
+            if (check)
+            {
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }

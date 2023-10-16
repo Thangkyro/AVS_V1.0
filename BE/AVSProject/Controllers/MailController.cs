@@ -1,11 +1,8 @@
-﻿using AVSProject.Models;
-using MailKit;
-using Microsoft.AspNetCore.Http;
+﻿using AVSProject.Interface;
+using AVSProject.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using System.Threading;
-using AVSProject.Interface;
-using System;
+using System.Threading.Tasks;
 
 namespace AVSProject.Controllers
 {
@@ -22,20 +19,24 @@ namespace AVSProject.Controllers
         public async Task<IActionResult> SendMailAsync(MailData mailData)
         {
             bool result = await _mail.SendAsync(mailData, new CancellationToken());
-
-            if (result)
+            if (!result)
             {
-                return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent.");
+                return new BadRequestResult();
             }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
-            }
+            return new OkResult();
+            //if (result)
+            //{
+            //    return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent.");
+            //}
+            //else
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
+            //}
         }
 
-        private IActionResult StatusCode(int status500InternalServerError, string v)
-        {
-            throw new NotImplementedException();
-        }
+        //private IActionResult StatusCode(int status500InternalServerError, string v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

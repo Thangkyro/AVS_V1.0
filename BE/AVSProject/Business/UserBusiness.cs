@@ -1,9 +1,11 @@
 ﻿using AVSProject.Common;
 using AVSProject.EFModel;
 using AVSProject.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AVSProject.DataService
@@ -12,6 +14,7 @@ namespace AVSProject.DataService
     {
         private static UserService userService = new UserService();
         private static db_AVSContext dataModel = new db_AVSContext();
+        private static string GetString(byte[] reason) => Encoding.ASCII.GetString(reason);
         public List<UserModel> GetUser()
         {
             List<UserModel> listData = new List<UserModel>();
@@ -65,7 +68,7 @@ namespace AVSProject.DataService
             var data = new SUser
             {
                 UserName = user.UserName,
-                Password = user.Password,
+                Password = AESUtility.Encrypt(user.Password, AESUtility.DEFAULT_ENCRYPT_KEY_STRING),
                 Permission = user.Permission,
                 BranchId = user.BranchId,
                 CreatedAt = user.CreatedAt,
@@ -91,6 +94,21 @@ namespace AVSProject.DataService
         public void DeleteUser(int userID)
         {
             userService.Delete(userID);
+        }
+        public bool ForgetPassword(string token, string newPass)
+        {
+            byte[] tokenByteArray = Convert.FromBase64String(token);
+            string email = GetString(tokenByteArray.Skip(8).ToArray());
+            //DateTime when = DateTime.FromBinary(BitConverter.ToInt64(tokenByteArray, 0));
+            //if (when < DateTime.UtcNow.AddMinutes(-5))
+            //{
+            //    return false;
+            //}
+            var checkUser = dataModel.SUser.Where(x => x.Email == email).FirstOrDefault();
+            if (checkUser == null) return false;
+            checkUser.Password = AESUtility.Encrypt(newPass, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
+            userService.Update(checkUser);
+            return true;
         }
     }
 }
