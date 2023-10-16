@@ -99,11 +99,11 @@ namespace AVSProject.DataService
         {
             byte[] tokenByteArray = Convert.FromBase64String(token);
             string email = GetString(tokenByteArray.Skip(8).ToArray());
-            //DateTime when = DateTime.FromBinary(BitConverter.ToInt64(tokenByteArray, 0));
-            //if (when < DateTime.UtcNow.AddMinutes(-5))
-            //{
-            //    return false;
-            //}
+            DateTime when = DateTime.FromBinary(BitConverter.ToInt64(tokenByteArray, 0));
+            if (when < DateTime.UtcNow.AddMinutes(-5))
+            {
+                return false;
+            }
             var checkUser = dataModel.SUser.Where(x => x.Email == email).FirstOrDefault();
             if (checkUser == null) return false;
             checkUser.Password = AESUtility.Encrypt(newPass, AESUtility.DEFAULT_ENCRYPT_KEY_STRING);
