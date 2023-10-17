@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';;
+import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import Cookie from 'js-cookie';
 import { IRootState } from '../store';
@@ -46,6 +46,8 @@ const SignIn = () => {
                 const {status} = error;
                 if (status === 401) {
                     toast.error('Invalid email or password');
+                } else {
+                    toast.error('Something went wrong, please try again!');
                 }
             })
         },
