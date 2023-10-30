@@ -22,6 +22,7 @@ namespace AVSProject.DataService
             listData = getAllUser.Select(x => new UserModel()
             {
                 Userid = x.Userid,
+                Email = x.Email,
                 UserName = x.UserName,
                 Password = x.Password,
                 Permission = x.Permission,

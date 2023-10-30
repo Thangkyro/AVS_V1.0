@@ -9,6 +9,7 @@ namespace AVSProject.Models
     {
         public int Userid { get; set; }
         public int BranchId { get; set; }
+        public string Email { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }
         public bool IsAdmin { get; set; }

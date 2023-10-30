@@ -2,11 +2,14 @@
 using AVSProject.DataService;
 using AVSProject.Interface;
 using AVSProject.Models;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Asn1.Pkcs;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -37,7 +40,7 @@ namespace AVSProject.Controllers
         public UserModel GetUser(int id)
         {
             var data = userBusiness.GetUserByID(id);
-            return data; 
+            return data;
         }
 
         [HttpPost]
@@ -75,6 +78,38 @@ namespace AVSProject.Controllers
                 return new BadRequestResult();
             }
             return new OkResult();
+        }
+
+        [HttpGet("ExportFile")]
+        public ActionResult ExportExcel()
+        {
+            var listUser = GetListUser();
+            using(XLWorkbook wb = new XLWorkbook())
+            {
+                wb.AddWorksheet(listUser, "User List");
+                using(MemoryStream ms = new MemoryStream())
+                {
+                    wb.SaveAs(ms);
+                    return File(ms.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Test.xlsx");
+                }
+            }
+        }
+        [NonAction]
+        private DataTable GetListUser()
+        {
+            DataTable result = new DataTable();
+            result.TableName = "Users";
+            result.Columns.Add("Name", typeof(string));
+            result.Columns.Add("Email", typeof(string));
+            var listData = GetUser();
+            if (listData.Count() > 0)
+            {
+                listData.ForEach(item =>
+                {
+                    result.Rows.Add(item.UserName, item.Email);
+                });
+            }
+            return result;
         }
     }
 }
