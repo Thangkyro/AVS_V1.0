@@ -22,6 +22,7 @@ namespace AVSProject.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private static ExportController exportController = new ExportController();
         private static UserBusiness userBusiness = new UserBusiness();
         private readonly IEMailService _mail;
 
@@ -81,18 +82,10 @@ namespace AVSProject.Controllers
         }
 
         [HttpGet("ExportFile")]
-        public ActionResult ExportExcel()
+        public ActionResult ExportExcelUser()
         {
             var listUser = GetListUser();
-            using(XLWorkbook wb = new XLWorkbook())
-            {
-                wb.AddWorksheet(listUser, "User List");
-                using(MemoryStream ms = new MemoryStream())
-                {
-                    wb.SaveAs(ms);
-                    return File(ms.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Test.xlsx");
-                }
-            }
+            return exportController.ExportExcel(listUser, "User");
         }
         [NonAction]
         private DataTable GetListUser()
