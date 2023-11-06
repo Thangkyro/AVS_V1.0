@@ -22,7 +22,7 @@ namespace AVSProject.Controllers
         //    var access_Token = generateJwt();
         //    return UNA;
         //}
-
+        [NonAction]
         private string generateJwt()
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
