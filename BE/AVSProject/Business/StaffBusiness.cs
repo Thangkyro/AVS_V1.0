@@ -66,27 +66,26 @@ namespace AVSProject.Business
             return data;
         }
 
-        public void UpdateStaff(StaffModel Staff)
+        public void UpdateStaff(StaffModel model)
         {
-            var check = staffService.Get(Staff.StaffID);
+            var check = staffService.Get(model.StaffID);
             var data = new SStaff
             {
-                StaffId = check.StaffId,
-                BranchId = check.BranchId,
-                StaffName = check.StaffName,
-                StaffCode = check.StaffCode,
-                Gender = check.Gender,
-                PhoneNumber1 = check.PhoneNumber1,
-                PhoneNumber2 = check.PhoneNumber1,
-                DateOfBirth = check.DateOfBirth.Value,
-                IsVn = check.IsVn.HasValue ? check.IsVn.Value : false,
-                Idcard = check.Idcard,
-                IsInactive = check.IsInactive.HasValue ? check.IsInactive.Value : false,
-                CreatedAt = check.CreatedAt.HasValue ? check.CreatedAt.Value : DateTime.Now,
-                CreatedBy = check.CreatedBy.HasValue ? check.CreatedBy.Value : 0,
-                ModifiedAt = check.ModifiedAt.HasValue ? check.ModifiedAt.Value : DateTime.Now,
-                ModifiedBy = check.ModifiedBy.HasValue ? check.ModifiedBy.Value : 0,
-                Decriptions = check.Decriptions
+                BranchId = model.BranchId,
+                StaffName = model.StaffName,
+                StaffCode = model.StaffCode,
+                Gender = model.Gender,
+                PhoneNumber1 = model.PhoneNumber1,
+                PhoneNumber2 = model.PhoneNumber1,
+                DateOfBirth = model.DateOfBirth,
+                IsVn = model.isVN,
+                Idcard = model.IDCard,
+                IsInactive = model.isInActive,
+                CreatedAt = model.CreateAt,
+                CreatedBy = model.CreateBy,
+                ModifiedAt = model.ModifiedAt,
+                ModifiedBy = model.ModifiedBy,
+                Decriptions = model.Descriptions
             };
             if (check == null)
             {

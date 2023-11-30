@@ -61,24 +61,23 @@ namespace AVSProject.Business
             return data;
         }
 
-        public void UpdateClass(ClassModel Class)
+        public void UpdateClass(ClassModel value)
         {
-            var check = classService.Get(Class.ClassID);
+            var check = classService.Get(value.ClassID);
             var data = new SClass
             {
-                ClassId = check.ClassId,
-                BranchId = check.BranchId,
-                ClassName = check.ClassName,
-                ClassCode = check.ClassCode,
-                IsInactive = check.IsInactive.HasValue ? check.IsInactive.Value : false,
-                CreatedAt = check.CreatedAt.HasValue ? check.CreatedAt.Value : DateTime.Now,
-                CreatedBy = check.CreatedBy.HasValue ? check.CreatedBy.Value : 0,
-                ModifiedAt = check.ModifiedAt.HasValue ? check.ModifiedAt.Value : DateTime.Now,
-                ModifiedBy = check.ModifiedBy.HasValue ? check.ModifiedBy.Value : 0,
-                Decriptions = check.Decriptions,
-                StartDate = check.StartDate.HasValue ? check.StartDate.Value : DateTime.Now,
-                EndDate = check.EndDate.HasValue ? check.EndDate.Value : DateTime.Now,
-                Level = check.Level
+                BranchId = value.BranchId,
+                ClassName = value.ClassName,
+                ClassCode = value.ClassCode,
+                IsInactive = value.isInActive,
+                CreatedAt = value.CreateAt,
+                CreatedBy = value.CreateBy,
+                ModifiedAt = value.ModifiedAt,
+                ModifiedBy = value.ModifiedBy,
+                Decriptions = value.Descriptions,
+                StartDate = value.StartDate,
+                EndDate = value.EndDate,
+                Level = value.Level
             };
             if (check == null)
             {

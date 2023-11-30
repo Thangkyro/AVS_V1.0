@@ -62,25 +62,24 @@ namespace AVSProject.Business
             return data;
         }
 
-        public void UpdateStudent(StudentModel Student)
+        public void UpdateStudent(StudentModel model)
         {
-            var check = StudentService.Get(Student.StudentID);
+            var check = StudentService.Get(model.StudentID);
             var data = new SStudents
             {
-                StudentId = check.StudentId,
-                BranchId = check.BranchId,
-                StudentName = check.StudentName,
-                StudentCode = check.StudentCode,
-                Gender = check.Gender,
-                PhoneNumber1 = check.PhoneNumber1,
-                PhoneNumber2 = check.PhoneNumber1,
-                DateOfBirth = check.DateOfBirth.Value,
-                IsInactive = check.IsInactive.HasValue ? check.IsInactive.Value : false,
-                CreatedAt = check.CreatedAt.HasValue ? check.CreatedAt.Value : DateTime.Now,
-                CreatedBy = check.CreatedBy.HasValue ? check.CreatedBy.Value : 0,
-                ModifiedAt = check.ModifiedAt.HasValue ? check.ModifiedAt.Value : DateTime.Now,
-                ModifiedBy = check.ModifiedBy.HasValue ? check.ModifiedBy.Value : 0,
-                Decriptions = check.Decriptions
+                BranchId = model.BranchId,
+                StudentName = model.StudentName,
+                StudentCode = model.StudentCode,
+                Gender = model.Gender,
+                PhoneNumber1 = model.PhoneNumber1,
+                PhoneNumber2 = model.PhoneNumber1,
+                DateOfBirth = model.DateOfBirth,
+                IsInactive = model.isInActive,
+                CreatedAt = model.CreateAt,
+                CreatedBy = model.CreateBy,
+                ModifiedAt = model.ModifiedAt,
+                ModifiedBy = model.ModifiedBy,
+                Decriptions = model.Descriptions
             };
             if (check == null)
             {
